@@ -1,4 +1,5 @@
-import java.awt.BorderLayout;
+package main.java.texteditor;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFileChooser;
@@ -6,9 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextPane;
-import javax.swing.JEditorPane;
-import javax.swing.JFormattedTextField;
 
 import java.awt.TextArea;
 import java.awt.event.ActionListener;
@@ -17,15 +15,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.awt.Font;
-import javax.swing.JTextArea;
 
 
-public class tester {
+public class Tester {
 	private boolean loaded =false;
 	private boolean prev = false;
 	private JFrame frame;
@@ -40,7 +35,7 @@ public class tester {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					tester window = new tester();
+					Tester window = new Tester();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,7 +47,7 @@ public class tester {
 	/**
 	 * Create the application.
 	 */
-	public tester() {
+	public Tester() {
 		initialize();
 
 	}

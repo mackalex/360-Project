@@ -1,3 +1,5 @@
+package main.java.texteditor;
+
 import java.util.ArrayList;
 public class Parser {
 
