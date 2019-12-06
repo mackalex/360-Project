@@ -21,6 +21,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.awt.Font;
+import javax.swing.JTextArea;
 
 
 public class tester {
@@ -30,6 +32,7 @@ public class tester {
 	private Parser parser = new Parser();
 	private ArrayList<String> input = new ArrayList<>();
 	private ArrayList<String> output = new ArrayList<>();
+	private ArrayList<String> errorlog = new ArrayList<String>();
 	/**
 	 * Launch the application.
 	 */
@@ -62,12 +65,19 @@ public class tester {
 	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 696, 453);
+		frame.setBounds(100, 100, 885, 501);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		final TextArea textArea1 = new TextArea();
-		textArea1.setBounds(183, 46, 450, 327);
+		
+		 JTextArea textArea2 = new JTextArea();
+		textArea2.setBounds(36, 141, 119, 221);
+		frame.getContentPane().add(textArea2);
+		
+		
+		 TextArea textArea1 = new TextArea();
+		textArea1.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		textArea1.setBounds(183, 46, 676, 378);
 		frame.getContentPane().add(textArea1);
 		
 		
@@ -104,7 +114,7 @@ public class tester {
 		          int userSelection = fileChooser.showSaveDialog( SecondFrame);*/
 			
 		});
-		btnSaveAs.setBounds(50, 156, 89, 23);
+		btnSaveAs.setBounds(50, 75, 89, 23);
 		frame.getContentPane().add(btnSaveAs);
 		
 		JButton btnLoadFile = new JButton("Load File");
@@ -114,40 +124,43 @@ public class tester {
 				chooser.showOpenDialog(null);
 				File f = chooser.getSelectedFile();
 				String filename = f.getAbsolutePath();
-				loaded =false;
-				input =new ArrayList<>();
-
 				
-				try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-				    while (br.ready()) 
-				        input.add(br.readLine());
-				    loaded =true;
-				}
-				catch(Exception e1 ){
-					JOptionPane.showMessageDialog(null, e1);
-				}
-			}
-		});
-		btnLoadFile.setBounds(50, 102, 89, 23);
-		frame.getContentPane().add(btnLoadFile);
-		
-		JButton btnErrorLog = new JButton("Error Log");
-		btnErrorLog.setBounds(50, 267, 89, 23);
-		frame.getContentPane().add(btnErrorLog);
-		
-		JButton btnPreview = new JButton("Preview");
-		btnPreview.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+				input =new ArrayList<>();
 				textArea1.setText(null);
-				if(loaded == true){
-					parser.run(input);
-					ArrayList<String> output = parser.output();
-					for(String a : output)
-						textArea1.append(a + "\n");
+				textArea2.setText(null);
+				
+				
+				if(f.getName().toLowerCase().endsWith(".txt")){
+					try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+							//get data
+					    while (br.ready()) 
+					        input.add(br.readLine());
+					    	//parse data
+					    parser.run(input);
+					    	//get error log
+					    //errorlog = parser.errorLog();
+							//get preview
+						output = parser.output();
+						for(String a : output)
+							textArea1.append(a + "\n");
+					}
+					catch(Exception e1 ){
+						JOptionPane.showMessageDialog(null, e1);
 					}
 				}
+				else{
+					String error= "Error: "+ f.getName()+" file is not a txt file";
+					errorlog.add(error);
+				}
+				
+				for(String a : errorlog)
+					textArea2.append(a + "\n");
+				
+			}
 		});
-		btnPreview.setBounds(50, 209, 89, 23);
-		frame.getContentPane().add(btnPreview);
+		btnLoadFile.setBounds(50, 29, 89, 23);
+		frame.getContentPane().add(btnLoadFile);
+		
+		
 	}
 }

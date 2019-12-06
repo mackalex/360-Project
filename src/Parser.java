@@ -161,46 +161,54 @@ public class Parser {
 	//
 	public static ArrayList<String> center(String placeholder){//reach both ends
 		ArrayList<String> inputlist = new ArrayList<String>();
-		/*
 		String secondHalf ="";
-
-		//if(indent ==2)
-		//	placeholder = "          "+placeholder;
-
+		String extrascpaces ="";
+		
 		if(placeholder.length() <(n)){
-			
-			int start = 0;
-			int end =placeholder.length();
-			int spacesToGOPerSide= n- placeholder.length();
-			if(spacesToGOPerSide %2 ==0)
-				spacesToGOPerSide= spacesToGOPerSide/2;
-			
-			else{
-				
-			}
-				spacesToGOPerSide= spacesToGOPerSide/2;
-			
-			
+            int w = n - placeholder.length();
+
+            if(w %2 ==0){
+            	for(int a  = 0; a < w/2; a++)
+            		extrascpaces=extrascpaces+" ";
+            	placeholder = ((extrascpaces + placeholder) +extrascpaces);
+            }	
+            else{
+            	for(int a  = 0; a < (w-1)/2; a++)
+            		extrascpaces=extrascpaces+" ";
+            	placeholder = ((extrascpaces + placeholder) +extrascpaces)+" ";
+            }
 		    inputlist.add(placeholder);
 		    return inputlist;
 		}else{
-		    String extrascpaces ="";
-		    String firsthalf="";
+			
+			
 			for(int i =(n-1); i > 0 ;i--){
-				extrascpaces =extrascpaces+" ";
+				
 	            if(Character.isWhitespace(placeholder.charAt(i))){
 	                secondHalf = placeholder.substring((i+1), (placeholder.length()));
 	                inputlist = (center(secondHalf));
-	                firsthalf=placeholder.substring(0,(i))+extrascpaces;
+	                
+	                String firsthalf = placeholder.substring(0,(i));
+	                
+	                int w = n - firsthalf.length();
+	                
+	                	
+	                if(w %2 ==0){
+	                	for(int a  = 0; a < w/2; a++)
+	                		extrascpaces=extrascpaces+" ";
+	                	firsthalf = extrascpaces + firsthalf +extrascpaces;
+	                }	
+	                else{
+	                	for(int a  = 0; a < (w-1)/2; a++)
+	                		extrascpaces=extrascpaces+" ";
+	                	firsthalf = extrascpaces + firsthalf +extrascpaces+" ";
+	                }
+
 	                inputlist.add(0,firsthalf);
 	                break;
 				}
 			}
 		}
-		
-		if(secondHalf =="")//fix this to break >n char lines into char lines
-		    inputlist.add(placeholder);
-		*/
 		return inputlist;
 		
 	}
@@ -332,44 +340,74 @@ public class Parser {
 	*/
 //column
 	public static void oneColumn(String placeholder){
-
+		
+		
+		
 		ArrayList<String> inputlist = new ArrayList<String>();
-		if(space ==1)
-			inputlist = singleSpace(placeholder);
-		if(space ==0)
-			inputlist = doubleSpace(placeholder);
-		
-		
-		for(int i =0; i <inputlist.size(); i ++)
+		if(justified ==0)
+			inputlist =leftJustified(placeholder);
+		if(justified ==1)
+			inputlist =center(placeholder);
+		if(justified ==2)
+			inputlist =rightJustified(placeholder);
+		if(justified ==3)
+			title(placeholder);
+
+		for(int i =0; i <inputlist.size(); i ++){
 			output.add(inputlist.get(i));
+			if(columns ==1 ){
+				if(i %1 ==0)
+					output.add("");
+			}
 			
-		
+		}		
 	}
+	
 	public static void twoColumn(String placeholder){
-		//System.out.println(placeholder);
 		String spaces = "          ";
 		ArrayList<String> inputlist = new ArrayList<String>();
-		if(space ==1)
-			inputlist = singleSpace(placeholder);
-		if(space ==0)
-			inputlist = doubleSpace(placeholder);
-		
-		//for(int w =0; w<inputlist.size(); w++ )
-		//	System.out.println(inputlist.get(w));
-		
-		
-		if((inputlist.size() %2) !=0){
-			int upperhalf = (inputlist.size()+1)/2;
-			int counter =((inputlist.size()+1)/2)-1;
-			int i=0;
-			for( i =0; i <counter; i ++)
-				output.add(inputlist.get(i)+spaces+inputlist.get(upperhalf+i));
-			output.add(inputlist.get(i));
-		}else {
-			int upperhalf = (inputlist.size())/2;
-			//int counter =((inputlist.size()-1)/2)-1;
-			for(int i =0; i <upperhalf; i ++)
-				output.add(inputlist.get(i)+spaces+inputlist.get(upperhalf+i));
+		if(justified ==0)
+			inputlist =leftJustified(placeholder);
+		if(justified ==1)
+			inputlist =center(placeholder);
+		if(justified ==2)
+			inputlist =rightJustified(placeholder);
+		if(justified ==3)
+			title(placeholder);
+		//35 10  35
+	
+		if(columns ==1){
+			String bigspace  = "                                             ";
+			if((inputlist.size() %2) ==0){
+				int counter = (inputlist.size())/2;
+				for( int i =0; i <counter; i=i+2){
+					output.add(inputlist.get(i)+spaces+inputlist.get(counter+i));
+					output.add("                                                                                ");
+				}
+			}else {
+				int upperhalf = (inputlist.size())/2;
+				for(int i =0; i <upperhalf; i =i+2){
+					if((inputlist.size()-i) <2)
+						output.add(inputlist.get(0)+bigspace);
+					else{
+						output.add(inputlist.get(i)+bigspace);
+						output.add(bigspace+inputlist.get(upperhalf+i));	
+					}
+				}
+			}
+		}else{
+			if((inputlist.size() %2) !=0){
+				int upperhalf = (inputlist.size()+1)/2;
+				int counter =((inputlist.size()+1)/2)-1;
+				int i=0;
+				for( i =0; i <counter; i ++)
+					output.add(inputlist.get(i)+spaces+inputlist.get(upperhalf+i));
+				output.add(inputlist.get(i));
+			}else {
+				int upperhalf = (inputlist.size())/2;
+				for(int i =0; i <upperhalf; i ++)
+					output.add(inputlist.get(i)+spaces+inputlist.get(upperhalf+i));
+			}
 		}
 	}
 	
