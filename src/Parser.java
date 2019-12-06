@@ -116,6 +116,9 @@ public class Parser {
 		}
 		
 		//System.out.println(input);
+			if(indent == 1)
+				input = "     " + input;
+
 			if(input != ""){
 				if(columns==0)
 					oneColumn(input);
