@@ -65,23 +65,22 @@ public class tester {
 	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 885, 501);
+		frame.setBounds(100, 100, 970, 555);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		
-		 JTextArea textArea2 = new JTextArea();
-		textArea2.setBounds(36, 141, 119, 221);
+		final TextArea textArea2 = new TextArea();
+		textArea2.setBounds(10, 435, 886, 71);
 		frame.getContentPane().add(textArea2);
 		
-		
-		 TextArea textArea1 = new TextArea();
+		final TextArea textArea1 = new TextArea();
+		textArea1.setBounds(119, 39, 777, 378);
 		textArea1.setFont(new Font("Monospaced", Font.PLAIN, 12));
-		textArea1.setBounds(183, 46, 676, 378);
 		frame.getContentPane().add(textArea1);
 		
 		
 		JButton btnSaveAs = new JButton("Save As");
+		btnSaveAs.setBounds(10, 255, 89, 23);
 		btnSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -106,25 +105,18 @@ public class tester {
 				      }
 				    }
 				  }
-				
-				/*
-				JFrame SecondFrame = new JFrame();
-		          JFileChooser fileChooser = new JFileChooser();
-		          fileChooser.setDialogTitle("Specify a file to save");
-		          int userSelection = fileChooser.showSaveDialog( SecondFrame);*/
-			
 		});
-		btnSaveAs.setBounds(50, 75, 89, 23);
 		frame.getContentPane().add(btnSaveAs);
 		
 		JButton btnLoadFile = new JButton("Load File");
+		btnLoadFile.setBounds(10, 148, 89, 23);
 		btnLoadFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser  = new JFileChooser();
 				chooser.showOpenDialog(null);
 				File f = chooser.getSelectedFile();
 				String filename = f.getAbsolutePath();
-				
+				errorlog = new ArrayList<>();
 				input =new ArrayList<>();
 				textArea1.setText(null);
 				textArea2.setText(null);
@@ -132,17 +124,16 @@ public class tester {
 				
 				if(f.getName().toLowerCase().endsWith(".txt")){
 					try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-							//get data
 					    while (br.ready()) 
 					        input.add(br.readLine());
-					    	//parse data
 					    parser.run(input);
-					    	//get error log
-					    //errorlog = parser.errorLog();
-							//get preview
 						output = parser.output();
 						for(String a : output)
 							textArea1.append(a + "\n");
+						if(output.size()==0){
+							String error= "Error: empty file";
+							errorlog.add(error);
+						}
 					}
 					catch(Exception e1 ){
 						JOptionPane.showMessageDialog(null, e1);
@@ -153,14 +144,23 @@ public class tester {
 					errorlog.add(error);
 				}
 				
+				
 				for(String a : errorlog)
 					textArea2.append(a + "\n");
 				
 			}
 		});
-		btnLoadFile.setBounds(50, 29, 89, 23);
 		frame.getContentPane().add(btnLoadFile);
 		
+		JLabel lblPreview = new JLabel("Preview");
+		lblPreview.setBounds(145, 11, 48, 35);
+		frame.getContentPane().add(lblPreview);
+		
+		JLabel lblNewLabel = new JLabel("Error Log");
+		lblNewLabel.setBounds(10, 388, 67, 35);
+		frame.getContentPane().add(lblNewLabel);
+		
+
 		
 	}
 }

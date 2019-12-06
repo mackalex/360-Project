@@ -62,14 +62,17 @@ public class Parser {
 		        	justified = 2;
 		            break; 
 		        case 4: //title
-		        	//title
-		        	//take the next line 
-		        	input = inputlist.get(i);
-		        	//and send it
-					if(columns==0)
-						oneColumn(input);
-					else
-						twoColumn(input);
+		        	
+		        	int holder = justified;
+		        	justified =1;
+		        	if(inputlist.size()>i){
+		        		input = inputlist.get(i+1);
+						if(columns==0)
+							oneColumn(input);
+						else
+							twoColumn(input);
+		        	}
+		        	justified = holder;
 		        	//update the counter 
 					i++;
 					input = "";
@@ -104,7 +107,7 @@ public class Parser {
 				    break; 
 	//e
 				case 12: //newline
-					output.add("\n");
+					output.add("");
 				    break; 
 	
 	
@@ -113,6 +116,9 @@ public class Parser {
 		}
 		
 		//System.out.println(input);
+			if(indent == 1)
+				input = "     " + input;
+
 			if(input != ""){
 				if(columns==0)
 					oneColumn(input);
@@ -167,7 +173,7 @@ public class Parser {
 		if(placeholder.length() <(n)){
             int w = n - placeholder.length();
 
-            if(w %2 ==0){
+            if(w %2 ==0){ 
             	for(int a  = 0; a < w/2; a++)
             		extrascpaces=extrascpaces+" ";
             	placeholder = ((extrascpaces + placeholder) +extrascpaces);
@@ -355,7 +361,7 @@ public class Parser {
 
 		for(int i =0; i <inputlist.size(); i ++){
 			output.add(inputlist.get(i));
-			if(columns ==1 ){
+			if(space ==0 ){
 				if(i %1 ==0)
 					output.add("");
 			}
@@ -376,7 +382,7 @@ public class Parser {
 			title(placeholder);
 		//35 10  35
 	
-		if(columns ==1){
+		if(space ==0){
 			String bigspace  = "                                             ";
 			if((inputlist.size() %2) ==0){
 				int counter = (inputlist.size())/2;
